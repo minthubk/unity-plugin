@@ -17,3 +17,5 @@ Temp
 temp
 AndroidManifest.xml
 AndroidManifest.xml.meta
+AndroidPlugin/Assets/StreamingAssets
+StreamingAssets.meta
