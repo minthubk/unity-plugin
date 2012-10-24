@@ -19,3 +19,5 @@ AndroidManifest.xml
 AndroidManifest.xml.meta
 AndroidPlugin/Assets/StreamingAssets
 StreamingAssets.meta
+AndroidPlugin/Assets/Plugins/Android/debugconfig.json
+AndroidPlugin/Assets/Plugins/Android/debugconfig.json.meta
