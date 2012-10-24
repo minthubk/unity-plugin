@@ -21,3 +21,5 @@ AndroidPlugin/Assets/StreamingAssets
 StreamingAssets.meta
 AndroidPlugin/Assets/Plugins/Android/debugconfig.json
 AndroidPlugin/Assets/Plugins/Android/debugconfig.json.meta
+AndroidPlugin/Assets/Plugins/Android/appington.jar
+AndroidPlugin/Assets/Plugins/Android/appington.jar.meta
