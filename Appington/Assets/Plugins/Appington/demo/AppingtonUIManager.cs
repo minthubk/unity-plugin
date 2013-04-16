@@ -16,7 +16,7 @@ public class AppingtonUIManager : MonoBehaviour
 	
 		if( GUI.Button( new Rect( xPos, yPos, width, height ), "Init" ) )
 		{
-			AppingtonAndroid.init();
+			Appington.init();
 		}
 
 		
@@ -24,7 +24,7 @@ public class AppingtonUIManager : MonoBehaviour
 		{
 			var dict = new Dictionary<string,object>();
 			dict.Add( "which", 1 );
-			AppingtonAndroid.control( "voice_tip", dict );
+			Appington.control( "voice_tip", dict );
 		}
 		
 		
@@ -32,7 +32,7 @@ public class AppingtonUIManager : MonoBehaviour
 		{
 			var dict = new Dictionary<string,object>();
 			dict.Add( "which", 2 );
-			AppingtonAndroid.control( "voice_tip", dict );
+			Appington.control( "voice_tip", dict );
 		}
 		
 		
@@ -40,7 +40,7 @@ public class AppingtonUIManager : MonoBehaviour
 		{
 			var dict = new Dictionary<string,object>();
 			dict.Add( "which", 3 );
-			AppingtonAndroid.control( "voice_tip", dict );
+			Appington.control( "voice_tip", dict );
 		}
 		
 		
@@ -48,7 +48,7 @@ public class AppingtonUIManager : MonoBehaviour
 		{
 			var dict = new Dictionary<string,object>();
 			dict.Add( "level", 3 );
-			AppingtonAndroid.control( "level_start", dict );
+			Appington.control( "level_start", dict );
 		}
 		
 		
@@ -56,7 +56,7 @@ public class AppingtonUIManager : MonoBehaviour
 		{
 			var dict = new Dictionary<string,object>();
 			dict.Add( "level", 3 );
-			AppingtonAndroid.control( "level_end", dict );
+			Appington.control( "level_end", dict );
 		}
 
 	}
