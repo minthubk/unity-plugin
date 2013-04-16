@@ -18,20 +18,14 @@ public class AppingtonMenuItem : MonoBehaviour
 	private static readonly string kPackageNameKey = "CURRENT_PACKAGE_NAME";
 
 
-	// returns either the Unity specific version of the UnityManifest (if available) or the old one (if available)
 	private static string getBaseManifestFile()
 	{
-		// we need the Unity manifest to start with. the one we want depends on our current version
-		var desiredFile = Application.unityVersion.StartsWith( "3.4" ) ? "Unity34Manifest.xml" : "Unity35Manifest.xml";
-			
-		var path = Path.Combine( Application.dataPath, "Plugins/Android" );
-		if( new DirectoryInfo( path ).GetFiles( desiredFile ).Length == 0 )
-		{
-			UnityEngine.Debug.Log( "Could not find Unity3XManifest.xml file in the Plugins/Android directory." );
-			throw new Exception( "Could not find Unity3XManifest.xml file in the Plugins/Android directory." );
-		}
-			
-		return new DirectoryInfo( path ).GetFiles( desiredFile ).First().FullName;			
+		// we need the Unity manifest to start with.
+		var pathToManifest = Path.Combine( EditorApplication.applicationContentsPath, "PlaybackEngines/AndroidPlayer/AndroidManifest.xml" );
+		if( !File.Exists( pathToManifest ) )
+			throw new Exception( "Could not find an AndroidManifest.xml file in your Unity application directory" );
+		
+		return pathToManifest;		
 	}
 
 
