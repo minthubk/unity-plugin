@@ -1,5 +1,5 @@
 using UnityEngine;
-using System.Collections;
+using System.Runtime.InteropServices;
 using System.Collections.Generic;
 
 
@@ -79,17 +79,27 @@ public class Appington : MonoBehaviour
 	
 	private class iOSAppington : IAppington
 	{
+		[DllImport("__Internal")]
+		private static extern void _appingtonInit();
+		
 		public void init()
 		{
 			if( Application.platform != RuntimePlatform.IPhonePlayer )
 				return;
+			
+			_appingtonInit();
 		}
 		
 		
-		public void control(string name, string parameters)
+		[DllImport("__Internal")]
+		private static extern void _appingtonControl( string name, string values );
+		
+		public void control( string name, string parameters )
 		{
 			if( Application.platform != RuntimePlatform.IPhonePlayer )
 				return;
+			
+			_appingtonControl( name, parameters );
 		}
 		
 		

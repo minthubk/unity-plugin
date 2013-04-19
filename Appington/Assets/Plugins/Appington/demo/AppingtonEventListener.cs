@@ -6,7 +6,6 @@ using System.Collections.Generic;
 
 public class AppingtonEventListener : MonoBehaviour
 {
-
 	void OnEnable()
 	{
 		// Listen to all events for illustration purposes
@@ -25,11 +24,12 @@ public class AppingtonEventListener : MonoBehaviour
 	{
 		Debug.Log( "onEvent: " + name );
 		
-		foreach( var de in values )
-			Debug.Log( de.Key + ": " + de.Value );
+		if( values != null )
+		{
+			foreach( var de in values )
+				Debug.Log( de.Key + ": " + de.Value );
+		}
 	}
-
-
 }
 
 

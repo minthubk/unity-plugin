@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class AppingtonUIManager : MonoBehaviour
 {
-#if UNITY_ANDROID
+#if UNITY_ANDROID || UNITY_IPHONE
 	void OnGUI()
 	{
 		float yPos = 5.0f;
@@ -47,16 +47,18 @@ public class AppingtonUIManager : MonoBehaviour
 		if( GUI.Button( new Rect( xPos, yPos += heightPlus, width, height ), "Level Start" ) )
 		{
 			var dict = new Dictionary<string,object>();
+			dict.Add( "event", "level_start" );
 			dict.Add( "level", 3 );
-			Appington.control( "level_start", dict );
+			Appington.control( "trigger", dict );
 		}
 		
 		
 		if( GUI.Button( new Rect( xPos, yPos += heightPlus, width, height ), "Level End" ) )
 		{
 			var dict = new Dictionary<string,object>();
-			dict.Add( "level", 3 );
-			Appington.control( "level_end", dict );
+			dict.Add( "event", "level_end" );
+			dict.Add( "level", 5 );
+			Appington.control( "trigger", dict );
 		}
 
 	}

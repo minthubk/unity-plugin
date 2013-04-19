@@ -8,6 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
+
 @interface AppingtonManager : NSObject
+
+
++ (AppingtonManager*)sharedManager;
+
++ (id)objectFromJson:(NSString*)json;
+
+
+
+- (void)control:(NSString*)name andValues:(NSDictionary*)values;
+
 
 @end
