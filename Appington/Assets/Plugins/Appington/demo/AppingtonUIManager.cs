@@ -19,28 +19,38 @@ public class AppingtonUIManager : MonoBehaviour
 			Appington.init();
 		}
 
-		
-		if( GUI.Button( new Rect( xPos, yPos += heightPlus, width, height ), "Voice Tip 1" ) )
+
+		if( GUI.Button( new Rect( xPos, yPos += heightPlus, width, height ), "Welcome" ) )
 		{
 			var dict = new Dictionary<string,object>();
-			dict.Add( "which", 1 );
-			Appington.control( "voice_tip", dict );
+			Appington.control( "welcome", dict );
+		}
+
+		
+		if( GUI.Button( new Rect( xPos, yPos += heightPlus, width, height ), "Health 20" ) )
+		{
+			var dict = new Dictionary<string,object>();
+			dict.Add( "life", 20 );
+			dict.Add( "event", "life_threshold" );
+			Appington.control( "trigger", dict );
 		}
 		
 		
-		if( GUI.Button( new Rect( xPos, yPos += heightPlus, width, height ), "Voice Tip 2" ) )
+		if( GUI.Button( new Rect( xPos, yPos += heightPlus, width, height ), "Health 50" ) )
 		{
 			var dict = new Dictionary<string,object>();
-			dict.Add( "which", 2 );
-			Appington.control( "voice_tip", dict );
+			dict.Add( "life", 50 );
+			dict.Add( "event", "life_threshold" );
+			Appington.control( "trigger", dict );
 		}
 		
 		
-		if( GUI.Button( new Rect( xPos, yPos += heightPlus, width, height ), "Voice Tip 3" ) )
+		if( GUI.Button( new Rect( xPos, yPos += heightPlus, width, height ), "Health 90" ) )
 		{
 			var dict = new Dictionary<string,object>();
-			dict.Add( "which", 3 );
-			Appington.control( "voice_tip", dict );
+			dict.Add( "life", 90 );
+			dict.Add( "event", "life_threshold" );
+			Appington.control( "trigger", dict );
 		}
 		
 		

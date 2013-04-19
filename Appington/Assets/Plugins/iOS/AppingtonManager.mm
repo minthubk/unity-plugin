@@ -99,14 +99,15 @@ void UnitySendMessage( const char * className, const char * methodName, const ch
 - (void)onAppingtonEvent:(NSNotification*)notification
 {
 	NSString *name = [notification name];
-	NSDictionary *values = [notification object];
+	NSDictionary *values = [notification userInfo];
 	if( !values )
 		values = [NSDictionary dictionary];
 	
 	// create a hash like so: { name: name, values: values }
-	NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:name, @"name", name, @"values", values, nil];
+	NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:name, @"name", values, @"values", nil];
+	NSString *json = [AppingtonManager objectToJson:dict];
 	
-	UnitySendMessage( "AppingtonManager", "onEventOccurred", [AppingtonManager objectToJson:dict].UTF8String );
+	UnitySendMessage( "AppingtonManager", "onEventOccurred", json.UTF8String );
 }
 
 

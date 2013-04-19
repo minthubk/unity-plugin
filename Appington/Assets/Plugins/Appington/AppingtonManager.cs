@@ -24,7 +24,7 @@ public class AppingtonManager : MonoBehaviour
 	{
 		// extract the message which will have a name and a hashtable of values
 		var dict = param.dictionaryFromJson();
-		var eventName = dict["name"].ToString();
+		var eventName = dict.ContainsKey( "name" ) ? dict["name"].ToString() : "Unknown";
 		
 		if( onEvent != null )
 			onEvent( eventName, dict["values"] as Dictionary<string,object> );
