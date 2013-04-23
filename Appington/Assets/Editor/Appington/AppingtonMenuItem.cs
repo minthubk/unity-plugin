@@ -14,6 +14,8 @@ using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
 public class AppingtonMenuItem : MonoBehaviour
 {
+	#region Manifest Maker
+	
 	private static string[] tokens = new string[] { "<!-- ACTIVITIES -->", "<!-- META-DATA -->", "<!-- PERMISSIONS -->" };
 	private static readonly string kPackageNameKey = "CURRENT_PACKAGE_NAME";
 
@@ -176,7 +178,11 @@ public class AppingtonMenuItem : MonoBehaviour
 
 		EditorUtility.DisplayDialog( "Appington Message", "Merged and created a new AndroidManifest.xml file!", "OK" );
 	}
-
+	
+	#endregion
+	
+	
+	#region Updaters
 
 	[MenuItem( "Appington/Install or Update Appington SDK...", false )]
 	static void installOrUpdateAppingtonLibrary()
@@ -218,7 +224,11 @@ public class AppingtonMenuItem : MonoBehaviour
 	// fetches the version of the latest SDK
 	private static string getLatestSDKVersionFromServer()
 	{
+#if UNITY_IPHONE
 		var url = "https://cdn.appington.com/updates/sdk/sdkinfo.json";
+#else
+		var url = "https://cdn.appington.com/updates/sdk/iossdkinfo.json";
+#endif
 		var www = new WWW( url );
 
 		while( !www.isDone )
@@ -265,7 +275,12 @@ public class AppingtonMenuItem : MonoBehaviour
 
 	private static void fetchSDKZip( string version, string destination )
 	{
+#if UNITY_IPHONE
+		var url = string.Format( "https://cdn.appington.com/updates/sdk/appington-ios-sdk-{0}.zip", version );
+#else
 		var url = string.Format( "https://cdn.appington.com/updates/sdk/appington-sdk-{0}.zip", version );
+#endif
+		
 		var www = new WWW( url );
 
 		while( !www.isDone )
@@ -374,5 +389,7 @@ public class AppingtonMenuItem : MonoBehaviour
 			} // end while
 		}
 	}
+
+	#endregion
 
 }
