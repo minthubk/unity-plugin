@@ -183,6 +183,17 @@ public class AppingtonMenuItem : MonoBehaviour
 	
 	
 	#region Updaters
+	
+	[MenuItem( "Appington/Install or Update Appington SDK...", true )]
+	static bool installOrUpdateAppingtonLibraryValidator()
+	{
+#if UNITY_IPHONE || UNITY_ANDROID
+		return true;
+#else
+		return false;
+#endif
+	}
+	
 
 	[MenuItem( "Appington/Install or Update Appington SDK...", false )]
 	static void installOrUpdateAppingtonLibrary()
@@ -254,18 +265,17 @@ public class AppingtonMenuItem : MonoBehaviour
 	private static string getInstalledSDKVersion()
 	{
 #if UNITY_IPHONE
-		return null;
-#else
-		
+		var path = Path.Combine( Application.dataPath, "Plugins/iOS/buildinfo.json" );
+#else	
 		var path = Path.Combine( Application.dataPath, "StreamingAssets/appington/buildinfo.json" );
-
+#endif
+		
 		if( !File.Exists( path ) )
 			return null;
 
 		var dict = File.ReadAllText( path ).dictionaryFromJson();
 
 		return dict["version"].ToString();
-#endif
 	}
 
 
@@ -372,7 +382,7 @@ public class AppingtonMenuItem : MonoBehaviour
 		var unzippedSDKDirectory = Directory.GetDirectories( destinationDirectory ).First();
 		
 		var iosPluginsDir = Path.Combine( Application.dataPath, "Plugins/iOS" );
-		var filesToCopy = new string[] { "libAppington.a", "Appington.h", "appingtonchecker.py" };
+		var filesToCopy = new string[] { "libAppington.a", "Appington.h", "appingtonchecker.py", "buildinfo.json" };
 		
 		foreach( var file in filesToCopy )
 		{
