@@ -5,8 +5,9 @@ using System.Collections.Generic;
 
 public class Appington : MonoBehaviour
 {
+	#pragma warning disable 0649
 	private static IAppington _instance;
-	
+	#pragma warning restore 0649
 
 	private static IAppington instance()
 	{
