@@ -201,7 +201,12 @@ public class AppingtonMenuItem : MonoBehaviour
 			{
 				var destinationPath = Path.Combine( System.IO.Path.GetTempPath(), "AppingtonSDK.zip" );
 				fetchSDKZip( latestSDKVersionAvailable, destinationPath );
+				
+#if UNITY_ANDROID
 				extractSDKAndImportFiles( destinationPath );
+#elif UNITY_IPHONE
+				extractSDKAndImportFilesForiOS( destinationPath );
+#endif
 
 				UnityEngine.Debug.Log( "Appington SDK updated" );
 			}
@@ -224,7 +229,7 @@ public class AppingtonMenuItem : MonoBehaviour
 	// fetches the version of the latest SDK
 	private static string getLatestSDKVersionFromServer()
 	{
-#if UNITY_IPHONE
+#if UNITY_ANDROID
 		var url = "https://cdn.appington.com/updates/sdk/sdkinfo.json";
 #else
 		var url = "https://cdn.appington.com/updates/sdk/iossdkinfo.json";
@@ -248,6 +253,10 @@ public class AppingtonMenuItem : MonoBehaviour
 	// Fetches the currently installed version number and returns it or null if no SDK is installed
 	private static string getInstalledSDKVersion()
 	{
+#if UNITY_IPHONE
+		return null;
+#else
+		
 		var path = Path.Combine( Application.dataPath, "StreamingAssets/appington/buildinfo.json" );
 
 		if( !File.Exists( path ) )
@@ -256,6 +265,7 @@ public class AppingtonMenuItem : MonoBehaviour
 		var dict = File.ReadAllText( path ).dictionaryFromJson();
 
 		return dict["version"].ToString();
+#endif
 	}
 
 
@@ -280,7 +290,7 @@ public class AppingtonMenuItem : MonoBehaviour
 #else
 		var url = string.Format( "https://cdn.appington.com/updates/sdk/appington-sdk-{0}.zip", version );
 #endif
-		
+
 		var www = new WWW( url );
 
 		while( !www.isDone )
@@ -306,7 +316,7 @@ public class AppingtonMenuItem : MonoBehaviour
 		// find the actual directory the files reside in
 		var unzippedSDKDirectory = Directory.GetDirectories( destinationDirectory ).First();
 
-		// find the goodes we need
+		// find the goods we need
 		var assetsZipFile = Path.Combine( unzippedSDKDirectory, "assets.zip" );
 
 		// extract the assets
@@ -349,6 +359,33 @@ public class AppingtonMenuItem : MonoBehaviour
 
 		AssetDatabase.Refresh();
 	}
+	
+	
+	private static void extractSDKAndImportFilesForiOS( string zipFilePath )
+	{
+		EditorUtility.DisplayProgressBar( "", "Extracting Appington SDK...", 0.5f );
+
+		var destinationDirectory = Path.Combine( System.IO.Path.GetTempPath(), "AppingtonSDK/" );
+		extractZipToDestination( zipFilePath, destinationDirectory );
+
+		// find the actual directory the files reside in
+		var unzippedSDKDirectory = Directory.GetDirectories( destinationDirectory ).First();
+		
+		var iosPluginsDir = Path.Combine( Application.dataPath, "Plugins/iOS" );
+		var filesToCopy = new string[] { "libAppington.a", "Appington.h", "appingtonchecker.py" };
+		
+		foreach( var file in filesToCopy )
+		{
+			var destPath = Path.Combine( iosPluginsDir, file );
+			var fullpath = Path.Combine( unzippedSDKDirectory, file );
+			
+			if( File.Exists( destPath ) )
+				File.Delete( destPath );
+			File.Copy( fullpath, destPath );
+		}
+		
+		AssetDatabase.Refresh();
+	}
 
 
 	// Extracts a zip file to a destination directory
@@ -389,7 +426,9 @@ public class AppingtonMenuItem : MonoBehaviour
 			} // end while
 		}
 	}
-
+	
+	
+	
 	#endregion
 
 }
