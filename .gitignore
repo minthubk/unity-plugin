@@ -1,10 +1,6 @@
 .DS_Store
 */Library/
 Android/*/Library/
-
-
-
-
 Xcode
 *.csproj
 *.pidb
@@ -23,3 +19,4 @@ AndroidPlugin/Assets/Plugins/Android/debugconfig.json
 AndroidPlugin/Assets/Plugins/Android/debugconfig.json.meta
 AndroidPlugin/Assets/Plugins/Android/appington.jar
 AndroidPlugin/Assets/Plugins/Android/appington.jar.meta
+*~
