@@ -200,8 +200,11 @@ public class AppingtonMenuItem : MonoBehaviour
 	{
 		try
 		{
-			// first, fetch the newest SDK version
+			// first, fetch the newest SDK version. this will return null if it is cancelled by the user
 			var latestSDKVersionAvailable = getLatestSDKVersionFromServer();
+			if( latestSDKVersionAvailable == null )
+				return;
+			
 			UnityEngine.Debug.Log( "latest Appington SDK version available: " + latestSDKVersionAvailable );
 
 			// see what version we have installed (if any)
@@ -246,9 +249,12 @@ public class AppingtonMenuItem : MonoBehaviour
 		var url = "https://cdn.appington.com/updates/sdk/iossdkinfo.json";
 #endif
 		var www = new WWW( url );
-
+		
 		while( !www.isDone )
-			EditorUtility.DisplayProgressBar( "Locating Current Appington SDK Version...", string.Empty, www.progress );
+		{
+			if( EditorUtility.DisplayCancelableProgressBar( "Locating Current Appington SDK Version...", string.Empty, www.progress ) )
+				return null;
+		}
 
 		if( www.error != null )
 			throw new Exception( www.error + "Try again later" );

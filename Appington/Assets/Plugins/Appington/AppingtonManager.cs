@@ -18,6 +18,12 @@ public class AppingtonManager : MonoBehaviour
 		gameObject.name = this.GetType().ToString();
 		DontDestroyOnLoad( this );
 	}
+	
+	
+	void OnApplicationPause( bool didPause )
+	{
+		Appington.onApplicationPause( didPause );
+	}
 
 
 	public void onEventOccurred( string param )
@@ -25,22 +31,26 @@ public class AppingtonManager : MonoBehaviour
 		// extract the message which will have a name and a hashtable of values
 		var dict = param.dictionaryFromJson();
 		var eventName = dict.ContainsKey( "name" ) ? dict["name"].ToString() : "Unknown";
+		var values = dict["values"] as Dictionary<string,object>;
 		
 		if( onEvent != null )
-			onEvent( eventName, dict["values"] as Dictionary<string,object> );
+			onEvent( eventName, values );
 		
-		handleEvent( eventName );
+		handleEvent( eventName, values );
 	}
 	
 	
 	// Automatically handles ducking audio
-	private void handleEvent( string eventName )
+	private void handleEvent( string eventName, Dictionary<string,object> values )
 	{
 		if( eventName == "audio_start" )
 		{
 			// duck audio
-			_initialVolume = AudioListener.volume;
-			AudioListener.volume = 0.17f;
+			if( values.ContainsKey( "lowered_volume" ) )
+			{
+				_initialVolume = AudioListener.volume;
+				AudioListener.volume = float.Parse( values["lowered_volume"].ToString() );
+			}
 		}
 		else if( eventName == "audio_end" )
 		{

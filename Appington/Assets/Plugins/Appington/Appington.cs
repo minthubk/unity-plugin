@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using System.Collections.Generic;
 
 
-public class Appington : MonoBehaviour
+public class Appington
 {
 	#pragma warning disable 0649
 	private static IAppington _instance;
@@ -62,7 +62,7 @@ public class Appington : MonoBehaviour
 	
 	#region Unity Lifecycle
 	
-	void OnApplicationPause( bool didPause )
+	public static void onApplicationPause( bool didPause )
 	{
 		if( didPause )
 			onPause();
