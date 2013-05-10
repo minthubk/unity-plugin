@@ -37,7 +37,7 @@ mydir=os.path.abspath(os.path.dirname(__file__))
 # Encoding for files we use
 utf8="utf-8" # Python has a staggering number of synonyms for this!
 
-SDK_VERSION="#!AppingtonVersion 0.8.31-f5f2f75"
+SDK_VERSION="#!AppingtonVersion 0.9.19-737d840"
 
 def run_pipe(*args):
     "Run a bunch of commands piped together returning exit code and stdout"
@@ -343,7 +343,7 @@ messages={
         "fatal": True
         },
     "freeze_needs_source": {
-        "msg": "The parameter needs to be the top level of the project: %(input)s",
+        "msg": "The parameter needs to be the top level directory of the project source code: %(input)s",
         "fatal": True
         },
     "freeze_no_campaigns": {
@@ -431,7 +431,21 @@ messages={
 if __name__=='__main__':
     import argparse
 
-    p=argparse.ArgumentParser(description="Checks apps and freezes campaigns")
+    p=argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
+        description="Checks apps and freezes campaigns", epilog="""
+Example usage to check an app as an ipa:
+
+  %(prog)s apps/published/myApp.ipa
+
+Example usage to check an app as a directory:
+
+  %(prog)s apps/dev/myapp/myApp.app
+
+Example usage to freeze campaigns:
+
+  %(prog)s --freeze-campaigns --bundle-id com.example.myapp apps/source/myapp
+
+""")
 
     # Undocumented options, also used during testing
     p.add_argument("--update-url", default="https://cdn.appington.com/updates/sdk/iossdkinfo.json", help=argparse.SUPPRESS)
@@ -442,12 +456,18 @@ if __name__=='__main__':
     p.add_argument("--freeze-campaigns", default=False, action="store_true", help="Creates/updates campaigns in your source directory")
     p.add_argument("--bundle-id", help="When running --freeze-campaigns use this bundle id")
     p.add_argument("--no-internet", default=True, action="store_false", dest="internet", help="Disable checks that need Internet connectivity")
-    p.add_argument("input", help="The file or directory to act on.  This should be the built .app directory or .ipa archive, unless --freeze-campaigns is specified in which case it should be the top level project directory")
+    p.add_argument("input", help="The file or directory to act on.  This should be the built .app directory or .ipa archive, unless --freeze-campaigns is specified in which case it should be the top level project source directory")
 
-    options=p.parse_args()
+    try:
+        options=p.parse_args()
 
-    if not os.path.isdir(options.input) and not os.path.isfile(options.input):
-        p.error("You must supply an IPA file or .app bundle directory to work on")
+        if not os.path.isdir(options.input) and not os.path.isfile(options.input):
+            p.error("You must supply an IPA file or .app bundle directory to work on")
+
+    except SystemExit as e:
+        if "-h" not in sys.argv and "--help" not in sys.argv:
+            print("Use --help to see example usages", file=sys.stderr)
+        raise
 
     if os.path.isdir(options.input):
         while options.input.endswith("/"):
