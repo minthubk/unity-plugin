@@ -20,3 +20,5 @@ AndroidPlugin/Assets/Plugins/Android/debugconfig.json.meta
 AndroidPlugin/Assets/Plugins/Android/appington.jar
 AndroidPlugin/Assets/Plugins/Android/appington.jar.meta
 *~
+
+.editor-config
