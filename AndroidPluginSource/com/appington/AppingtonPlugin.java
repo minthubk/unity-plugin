@@ -62,9 +62,9 @@ public class AppingtonPlugin implements com.appington.agar.EventListenerJSON
 
 
 	// Public API exposed to Unity
-	public void init()
+	public void init(String api_token)
 	{
-		com.appington.agar.Agar.init( getActivity() );
+		com.appington.agar.Agar.init( getActivity(), api_token );
 		com.appington.agar.Agar.registerListener( this );
 		onResume();
 	}
