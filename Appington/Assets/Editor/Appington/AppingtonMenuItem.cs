@@ -362,17 +362,6 @@ public class AppingtonMenuItem : MonoBehaviour
 			File.Delete( jarHome );
 		File.Move( jarFile, jarHome );
 
-
-		// copy the debugconfig.json file to its new home
-		var jsonFile = Path.Combine( unzippedSDKDirectory, "debugconfig.json" );
-		if( File.Exists( jsonFile ) )
-		{
-			var jsonHome = Path.Combine( Application.dataPath, "Plugins/Android/debugconfig.json" );
-			if( File.Exists( jsonHome ) )
-				File.Delete( jsonHome );
-			File.Move( jsonFile, jsonHome );
-		}
-
 		AssetDatabase.Refresh();
 	}
 
