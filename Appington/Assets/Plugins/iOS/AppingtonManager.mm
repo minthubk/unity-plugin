@@ -1,5 +1,5 @@
 //
-//  AppingtonManager.m
+//  AppingtonManager.mm
 //  Unity-iPhone
 //
 //  Created by Mike Desaro on 4/16/13.
@@ -24,18 +24,18 @@ void UnitySendMessage( const char * className, const char * methodName, const ch
 {
 	static dispatch_once_t pred;
 	static AppingtonManager *_sharedInstance = nil;
-	
+
 	dispatch_once( &pred, ^{ _sharedInstance = [[self alloc] init]; } );
 	return _sharedInstance;
 }
 
 
-- (id)init
+- (id)init:(NSString*)api_token
 {
 	if( ( self = [super init] ) )
 	{
-		[Appington start];
-		
+		[Appington start:api_token];
+
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(onAppingtonEvent:)
 													 name:nil
@@ -56,14 +56,14 @@ void UnitySendMessage( const char * className, const char * methodName, const ch
 		{
 			NSError *error = nil;
 			NSData *jsonData = [NSJSONSerialization dataWithJSONObject:obj options:0 error:&error];
-			
+
 			if( jsonData && !error )
 				return [[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding] autorelease];
 			else
 				NSLog( @"jsonData was null, error: %@", [error localizedDescription] );
 		}
 	}
-	
+
 	return @"{}";
 }
 
@@ -87,7 +87,7 @@ void UnitySendMessage( const char * className, const char * methodName, const ch
             }
         } // end if isValid
     } // end if jsonClass
-    
+
     // failure!
     return [NSDictionary dictionary];
 }
@@ -102,11 +102,11 @@ void UnitySendMessage( const char * className, const char * methodName, const ch
 	NSDictionary *values = [notification userInfo];
 	if( !values )
 		values = [NSDictionary dictionary];
-	
+
 	// create a hash like so: { name: name, values: values }
 	NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:name, @"name", values, @"values", nil];
 	NSString *json = [AppingtonManager objectToJson:dict];
-	
+
 	UnitySendMessage( "AppingtonManager", "onEventOccurred", json.UTF8String );
 }
 
@@ -128,19 +128,17 @@ void UnitySendMessage( const char * className, const char * methodName, const ch
 extern "C"
 {
 	#define GetStringParam( _x_ ) ( _x_ != NULL ) ? [NSString stringWithUTF8String:_x_] : [NSString stringWithUTF8String:""]
-	
-	
+
+
 	void _appingtonInit()
 	{
 		[AppingtonManager sharedManager];
 	}
 
-	
+
 	void _appingtonControl( const char * name, const char * values )
 	{
 		NSDictionary *dict = [AppingtonManager objectFromJson:GetStringParam( values )];
 		[[AppingtonManager sharedManager] control:GetStringParam( name ) andValues:dict];
 	}
 }
-
-

@@ -21,15 +21,15 @@ public class Appington
 		}
 		return _instance;
 	}
-	
 
-	
+
+
 	#region Public API
-	
+
 	// Initializes the Appington SDK and prepares it for use
-	public static void init()
+	public static void init(string api_token)
 	{
-		instance().init();
+		instance().init(api_token);
 	}
 
 
@@ -38,10 +38,10 @@ public class Appington
 	{
 		instance().control( name, parameters != null ? parameters.toJson() : "{}" );
 	}
-	
+
 	#endregion
-	
-	
+
+
 	#region Private methods
 
 	// Called automatically when Unity is paused
@@ -56,12 +56,12 @@ public class Appington
 	{
 		instance().onResume();
 	}
-	
+
 	#endregion
-	
-	
+
+
 	#region Unity Lifecycle
-	
+
 	public static void onApplicationPause( bool didPause )
 	{
 		if( didPause )
@@ -69,109 +69,109 @@ public class Appington
 		else
 			onResume();
 	}
-	
+
 	#endregion
 
-	
-	
+
+
 	#region Platform Specific Private Implementations
-	
+
 #if UNITY_IPHONE
-	
+
 	private class iOSAppington : IAppington
 	{
 		[DllImport("__Internal")]
-		private static extern void _appingtonInit();
-		
-		public void init()
+		private static extern void _appingtonInit(string);
+
+		public void init(string api_token)
 		{
 			if( Application.platform != RuntimePlatform.IPhonePlayer )
 				return;
-			
-			_appingtonInit();
+
+			_appingtonInit(api_token);
 		}
-		
-		
+
+
 		[DllImport("__Internal")]
 		private static extern void _appingtonControl( string name, string values );
-		
+
 		public void control( string name, string parameters )
 		{
 			if( Application.platform != RuntimePlatform.IPhonePlayer )
 				return;
-			
+
 			_appingtonControl( name, parameters );
 		}
-		
-		
+
+
 		public void onResume()
 		{
 			if( Application.platform != RuntimePlatform.IPhonePlayer )
 				return;
 		}
-		
-		
+
+
 		public void onPause()
 		{
 			if( Application.platform != RuntimePlatform.IPhonePlayer )
 				return;
 		}
 	}
-	
+
 #elif UNITY_ANDROID
-	
+
 	private class AndroidAppington : IAppington
 	{
 		private static AndroidJavaObject _plugin;
-		
+
 		public AndroidAppington()
 		{
 			if( Application.platform != RuntimePlatform.Android )
 				return;
-			
+
 			using( var pluginClass = new AndroidJavaClass( "com.appington.AppingtonPlugin" ) )
 				_plugin = pluginClass.CallStatic<AndroidJavaObject>( "instance" );
 		}
 
-		
-		public void init()
+
+		public void init(string api_token)
 		{
 			if( Application.platform != RuntimePlatform.Android )
 				return;
-			
-			_plugin.Call( "init" );
+
+			_plugin.Call( "init", api_token );
 		}
-		
-		
+
+
 		public void control( string name, string parameters )
 		{
 			if( Application.platform != RuntimePlatform.Android )
 				return;
-			
+
 			_plugin.Call( "control", name, parameters );
 		}
-		
-		
+
+
 		public void onResume()
 		{
 			if( Application.platform != RuntimePlatform.Android )
 				return;
-			
+
 			_plugin.Call( "onResume" );
 		}
-		
-		
+
+
 		public void onPause()
 		{
 			if( Application.platform != RuntimePlatform.Android )
 				return;
-			
+
 			_plugin.Call( "onPause" );
 		}
 	}
-	
+
 #endif
-	
+
 	#endregion
-	
+
 }
