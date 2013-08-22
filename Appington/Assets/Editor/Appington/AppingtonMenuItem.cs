@@ -15,7 +15,7 @@ using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 public class AppingtonMenuItem : MonoBehaviour
 {
 	#region Manifest Maker
-	
+
 	private static string[] tokens = new string[] { "<!-- ACTIVITIES -->", "<!-- META-DATA -->", "<!-- PERMISSIONS -->" };
 	private static readonly string kPackageNameKey = "CURRENT_PACKAGE_NAME";
 
@@ -178,12 +178,12 @@ public class AppingtonMenuItem : MonoBehaviour
 
 		EditorUtility.DisplayDialog( "Appington Message", "Merged and created a new AndroidManifest.xml file!", "OK" );
 	}
-	
+
 	#endregion
-	
-	
+
+
 	#region Updaters
-	
+
 	[MenuItem( "Appington/Install or Update Appington SDK...", true )]
 	static bool installOrUpdateAppingtonLibraryValidator()
 	{
@@ -193,7 +193,7 @@ public class AppingtonMenuItem : MonoBehaviour
 		return false;
 #endif
 	}
-	
+
 
 	[MenuItem( "Appington/Install or Update Appington SDK...", false )]
 	static void installOrUpdateAppingtonLibrary()
@@ -204,7 +204,7 @@ public class AppingtonMenuItem : MonoBehaviour
 			var latestSDKVersionAvailable = getLatestSDKVersionFromServer();
 			if( latestSDKVersionAvailable == null )
 				return;
-			
+
 			UnityEngine.Debug.Log( "latest Appington SDK version available: " + latestSDKVersionAvailable );
 
 			// see what version we have installed (if any)
@@ -215,7 +215,7 @@ public class AppingtonMenuItem : MonoBehaviour
 			{
 				var destinationPath = Path.Combine( System.IO.Path.GetTempPath(), "AppingtonSDK.zip" );
 				fetchSDKZip( latestSDKVersionAvailable, destinationPath );
-				
+
 #if UNITY_ANDROID
 				extractSDKAndImportFiles( destinationPath );
 #elif UNITY_IPHONE
@@ -249,7 +249,7 @@ public class AppingtonMenuItem : MonoBehaviour
 		var url = "https://cdn.appington.com/updates/sdk/iossdkinfo.json";
 #endif
 		var www = new WWW( url );
-		
+
 		while( !www.isDone )
 		{
 			if( EditorUtility.DisplayCancelableProgressBar( "Locating Current Appington SDK Version...", string.Empty, www.progress ) )
@@ -272,10 +272,10 @@ public class AppingtonMenuItem : MonoBehaviour
 	{
 #if UNITY_IPHONE
 		var path = Path.Combine( Application.dataPath, "Plugins/iOS/buildinfo.json" );
-#else	
+#else
 		var path = Path.Combine( Application.dataPath, "StreamingAssets/appington/buildinfo.json" );
 #endif
-		
+
 		if( !File.Exists( path ) )
 			return null;
 
@@ -302,9 +302,9 @@ public class AppingtonMenuItem : MonoBehaviour
 	private static void fetchSDKZip( string version, string destination )
 	{
 #if UNITY_IPHONE
-		var url = string.Format( "https://cdn.appington.com/updates/sdk/appington-ios-sdk-{0}.zip", version );
+		var url = string.Format( "https://cdn.appington.com/updates/sdk/appington-kiuas-ios-sdk-{0}.zip", version );
 #else
-		var url = string.Format( "https://cdn.appington.com/updates/sdk/appington-sdk-{0}.zip", version );
+		var url = string.Format( "https://cdn.appington.com/updates/sdk/appington-kiuas-android-sdk-{0}.zip", version );
 #endif
 
 		var www = new WWW( url );
@@ -375,8 +375,8 @@ public class AppingtonMenuItem : MonoBehaviour
 
 		AssetDatabase.Refresh();
 	}
-	
-	
+
+
 	private static void extractSDKAndImportFilesForiOS( string zipFilePath )
 	{
 		EditorUtility.DisplayProgressBar( "", "Extracting Appington SDK...", 0.5f );
@@ -386,20 +386,20 @@ public class AppingtonMenuItem : MonoBehaviour
 
 		// find the actual directory the files reside in
 		var unzippedSDKDirectory = Directory.GetDirectories( destinationDirectory ).First();
-		
+
 		var iosPluginsDir = Path.Combine( Application.dataPath, "Plugins/iOS" );
 		var filesToCopy = new string[] { "libAppington.a", "Appington.h", "appingtonchecker.py", "buildinfo.json" };
-		
+
 		foreach( var file in filesToCopy )
 		{
 			var destPath = Path.Combine( iosPluginsDir, file );
 			var fullpath = Path.Combine( unzippedSDKDirectory, file );
-			
+
 			if( File.Exists( destPath ) )
 				File.Delete( destPath );
 			File.Copy( fullpath, destPath );
 		}
-		
+
 		AssetDatabase.Refresh();
 	}
 
@@ -442,9 +442,9 @@ public class AppingtonMenuItem : MonoBehaviour
 			} // end while
 		}
 	}
-	
-	
-	
+
+
+
 	#endregion
 
 }
