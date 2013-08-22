@@ -8,4 +8,4 @@ then
     exit 1
 fi
 
-/Applications/Unity/Unity.app/Contents/MacOS/Unity -batchmode -quit -projectPath ~/projects/unity-plugin/Appington/ -exportPackage Assets "$1/AppingtonPlugin.unitypackage"
+/Applications/Unity/Unity.app/Contents/MacOS/Unity -batchmode -quit -projectPath "`pwd`/Appington/" -exportPackage Assets "$1/AppingtonPlugin.unitypackage"
