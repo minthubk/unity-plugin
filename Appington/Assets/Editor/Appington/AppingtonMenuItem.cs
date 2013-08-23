@@ -271,7 +271,7 @@ public class AppingtonMenuItem : MonoBehaviour
 	private static string getInstalledSDKVersion()
 	{
 #if UNITY_IPHONE
-		var path = Path.Combine( Application.dataPath, "Plugins/iOS/buildinfo.json" );
+		var path = Path.Combine( Application.dataPath, "Plugins/iOS/.buildinfo.json" );
 #else
 		var path = Path.Combine( Application.dataPath, "StreamingAssets/appington/buildinfo.json" );
 #endif
@@ -377,7 +377,7 @@ public class AppingtonMenuItem : MonoBehaviour
 		var unzippedSDKDirectory = Directory.GetDirectories( destinationDirectory ).First();
 
 		var iosPluginsDir = Path.Combine( Application.dataPath, "Plugins/iOS" );
-		var filesToCopy = new string[] { "libAppington.a", "Appington.h", "appingtonchecker.py", "buildinfo.json" };
+		var filesToCopy = new string[] { "libAppington.a", "Appington.h", ".buildinfo.json" };
 
 		foreach( var file in filesToCopy )
 		{
