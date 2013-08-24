@@ -12,63 +12,61 @@ public class AppingtonUIManager : MonoBehaviour
 		float width = ( Screen.width >= 800 || Screen.height >= 800 ) ? 320 : 160;
 		float height = ( Screen.width >= 800 || Screen.height >= 800 ) ? 80 : 40;
 		float heightPlus = height + 10.0f;
-	
-	
+
+
 		if( GUI.Button( new Rect( xPos, yPos, width, height ), "Init" ) )
 		{
-			Appington.init();
+            // See https://dashboard.appington.com/integrate/#init-apppington
+            // (step 3) to get the correct api token here
+			Appington.init(@api_token@);
 		}
 
 
-		if( GUI.Button( new Rect( xPos, yPos += heightPlus, width, height ), "Welcome" ) )
+		if( GUI.Button( new Rect( xPos, yPos += heightPlus, width, height ), "Placement 1" ) )
 		{
 			var dict = new Dictionary<string,object>();
-			Appington.control( "welcome", dict );
+            dict.Add("id", "1");
+			Appington.control( "placement", dict );
 		}
 
-		
-		if( GUI.Button( new Rect( xPos, yPos += heightPlus, width, height ), "Health 20" ) )
+
+		if( GUI.Button( new Rect( xPos, yPos += heightPlus, width, height ), "Conversion 1" ) )
 		{
 			var dict = new Dictionary<string,object>();
-			dict.Add( "life", 20 );
-			dict.Add( "event", "life_threshold" );
-			Appington.control( "trigger", dict );
+			dict.Add( "id", "1" );
+			Appington.control( "conversion", dict );
 		}
-		
-		
-		if( GUI.Button( new Rect( xPos, yPos += heightPlus, width, height ), "Health 50" ) )
+
+
+		if( GUI.Button( new Rect( xPos, yPos += heightPlus, width, height ), "Placement 2" ) )
 		{
 			var dict = new Dictionary<string,object>();
-			dict.Add( "life", 50 );
-			dict.Add( "event", "life_threshold" );
-			Appington.control( "trigger", dict );
+			dict.Add( "id", "2" );
+			Appington.control( "placement", dict );
 		}
-		
-		
-		if( GUI.Button( new Rect( xPos, yPos += heightPlus, width, height ), "Health 90" ) )
+
+
+		if( GUI.Button( new Rect( xPos, yPos += heightPlus, width, height ), "Placement 3" ) )
 		{
 			var dict = new Dictionary<string,object>();
-			dict.Add( "life", 90 );
-			dict.Add( "event", "life_threshold" );
-			Appington.control( "trigger", dict );
+			dict.Add( "id", "3" );
+			Appington.control( "placement", dict );
 		}
-		
-		
-		if( GUI.Button( new Rect( xPos, yPos += heightPlus, width, height ), "Level Start" ) )
+
+
+		if( GUI.Button( new Rect( xPos, yPos += heightPlus, width, height ), "Placement 4" ) )
 		{
 			var dict = new Dictionary<string,object>();
-			dict.Add( "event", "level_start" );
-			dict.Add( "level", 3 );
-			Appington.control( "trigger", dict );
+			dict.Add( "id", "4" );
+			Appington.control( "placement", dict );
 		}
-		
-		
-		if( GUI.Button( new Rect( xPos, yPos += heightPlus, width, height ), "Level End" ) )
+
+
+		if( GUI.Button( new Rect( xPos, yPos += heightPlus, width, height ), "Placement 5" ) )
 		{
 			var dict = new Dictionary<string,object>();
-			dict.Add( "event", "level_end" );
-			dict.Add( "level", 5 );
-			Appington.control( "trigger", dict );
+			dict.Add( "id", "5" );
+			Appington.control( "placement", dict );
 		}
 
 	}
