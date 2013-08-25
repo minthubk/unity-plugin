@@ -20,12 +20,15 @@ void UnitySendMessage( const char * className, const char * methodName, const ch
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark NSObject
 
-+ (AppingtonManager*)sharedManager
++ (AppingtonManager*)sharedManager:(NSString*)api_token
 {
 	static dispatch_once_t pred;
 	static AppingtonManager *_sharedInstance = nil;
 
-	dispatch_once( &pred, ^{ _sharedInstance = [[self alloc] init]; } );
+        // if not initialised then we want to ignore all calls
+        if(!api_token) return nil;
+
+	dispatch_once( &pred, ^{ _sharedInstance = [[self alloc] init:api_token]; } );
 	return _sharedInstance;
 }
 
@@ -130,15 +133,15 @@ extern "C"
 	#define GetStringParam( _x_ ) ( _x_ != NULL ) ? [NSString stringWithUTF8String:_x_] : [NSString stringWithUTF8String:""]
 
 
-	void _appingtonInit()
+	void _appingtonInit( const char *api_token )
 	{
-		[AppingtonManager sharedManager];
+                [AppingtonManager sharedManager:[NSString stringWithUTF8String:api_token]];
 	}
 
 
 	void _appingtonControl( const char * name, const char * values )
 	{
 		NSDictionary *dict = [AppingtonManager objectFromJson:GetStringParam( values )];
-		[[AppingtonManager sharedManager] control:GetStringParam( name ) andValues:dict];
+                [[AppingtonManager sharedManager:nil] control:GetStringParam( name ) andValues:dict];
 	}
 }

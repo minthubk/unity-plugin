@@ -81,7 +81,7 @@ public class Appington
 	private class iOSAppington : IAppington
 	{
 		[DllImport("__Internal")]
-		private static extern void _appingtonInit(string);
+		private static extern void _appingtonInit(string api_token);
 
 		public void init(string api_token)
 		{
