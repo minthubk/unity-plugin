@@ -20,15 +20,17 @@ void UnitySendMessage( const char * className, const char * methodName, const ch
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark NSObject
 
+NSString *synchronizer=@"synchronizer";
+
 + (AppingtonManager*)sharedManager:(NSString*)api_token
 {
-	static dispatch_once_t pred;
 	static AppingtonManager *_sharedInstance = nil;
 
-        // if not initialised then we want to ignore all calls
-        if(!api_token) return nil;
+        @synchronized(synchronizer) {
+            if(!_sharedInstance && api_token)
+                _sharedInstance = [[self alloc] init:api_token];
+        }
 
-	dispatch_once( &pred, ^{ _sharedInstance = [[self alloc] init:api_token]; } );
 	return _sharedInstance;
 }
 
