@@ -12,7 +12,7 @@
 @interface AppingtonManager : NSObject
 
 
-+ (AppingtonManager*)sharedManager;
++ (AppingtonManager*)sharedManager:(NSString*)api_token;
 
 + (id)objectFromJson:(NSString*)json;
 
