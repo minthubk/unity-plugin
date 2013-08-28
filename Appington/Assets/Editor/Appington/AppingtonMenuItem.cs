@@ -217,7 +217,7 @@ public class AppingtonMenuItem : MonoBehaviour
 				fetchSDKZip( latestSDKVersionAvailable, destinationPath );
 
 #if UNITY_ANDROID
-				extractSDKAndImportFiles( destinationPath );
+				extractSDKAndImportFilesForAndroid( destinationPath );
 #elif UNITY_IPHONE
 				extractSDKAndImportFilesForiOS( destinationPath );
 #endif
@@ -322,7 +322,7 @@ public class AppingtonMenuItem : MonoBehaviour
 	}
 
 
-	private static void extractSDKAndImportFiles( string zipFilePath )
+	private static void extractSDKAndImportFilesForAndroid( string zipFilePath )
 	{
 		EditorUtility.DisplayProgressBar( "", "Extracting Appington SDK...", 0.5f );
 
