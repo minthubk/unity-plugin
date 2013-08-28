@@ -389,6 +389,25 @@ public class AppingtonMenuItem : MonoBehaviour
 			File.Copy( fullpath, destPath );
 		}
 
+        // we need the appington directory in streamingassets
+        var streamingAssetsDir = Path.Combine( Application.dataPath, "StreamingAssets" );
+		if( !Directory.Exists( streamingAssetsDir ) )
+			Directory.CreateDirectory( streamingAssetsDir );
+
+        var assetsHomeDir = Path.Combine( Application.dataPath, "StreamingAssets/appington/" );
+		if( !Directory.Exists( assetsHomeDir ) )
+			Directory.CreateDirectory( assetsHomeDir );
+
+        foreach ( var file in Directory.GetFiles( Path.Combine( unzippedSDKDirectory, "appington" ) ) )
+        {
+            var srcPath = Path.Combine( Path.Combine( unzippedSDKDirectory, "appington" ), file );
+            var destPath = Path.Combine( assetsHomeDir, file );
+
+			if( File.Exists( destPath ) )
+				File.Delete( destPath );
+			File.Copy( srcPath, destPath );
+        }
+
 		AssetDatabase.Refresh();
 	}
 
