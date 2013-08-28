@@ -2,7 +2,7 @@
 
 set -e
 
-javac -cp "androidlibs/*" AndroidPluginSource/com/appington/*.java
+javac -bootclasspath androidlibs/android.jar -cp "androidlibs/*" -source 1.6 -target 1.6 AndroidPluginSource/com/appington/*.java
 
 cd AndroidPluginSource
 
