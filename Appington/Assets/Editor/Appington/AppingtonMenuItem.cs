@@ -400,8 +400,9 @@ public class AppingtonMenuItem : MonoBehaviour
 
         foreach ( var file in Directory.GetFiles( Path.Combine( unzippedSDKDirectory, "appington" ) ) )
         {
-            var srcPath = Path.Combine( Path.Combine( unzippedSDKDirectory, "appington" ), file );
-            var destPath = Path.Combine( assetsHomeDir, file );
+            var basename = Path.GetFileName( file );
+            var srcPath = Path.Combine( Path.Combine( unzippedSDKDirectory, "appington" ), basename );
+            var destPath = Path.Combine( assetsHomeDir, basename );
 
 			if( File.Exists( destPath ) )
 				File.Delete( destPath );
