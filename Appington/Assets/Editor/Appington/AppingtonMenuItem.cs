@@ -295,7 +295,7 @@ public class AppingtonMenuItem : MonoBehaviour
 		var currentVersion = new Version( currentInstalledVersion.Substring( 0, currentInstalledVersion.IndexOf( "-" ) ) );
 		var latestVersion = new Version( latestAvailableVersion.Substring( 0, latestAvailableVersion.IndexOf( "-" ) ) );
 
-		return currentVersion.CompareTo( latestVersion ) < 0;
+		return currentVersion.CompareTo( latestVersion ) <= 0;
 	}
 
 
