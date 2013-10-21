@@ -20,13 +20,13 @@ void UnitySendMessage( const char * className, const char * methodName, const ch
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark NSObject
 
-NSString *synchronizer=@"synchronizer";
+NSString *sm_singleton_synchronizer=@"synchronizer";
 
 + (AppingtonManager*)sharedManager:(NSString*)api_token
 {
 	static AppingtonManager *_sharedInstance = nil;
 
-        @synchronized(synchronizer) {
+        @synchronized(sm_singleton_synchronizer) {
             if(!_sharedInstance && api_token)
                 _sharedInstance = [[self alloc] init:api_token];
         }
