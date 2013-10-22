@@ -13,6 +13,6 @@ res=$?
 if [ $res -ne 0 ]
 then
     echo "Failed! $res"
-    echo "See ~/Library/Logs/Unity/Editor.log"
+    echo "See ~/Library/Logs/Unity/Editor.log - you may need build target not Android or iOS"
     exit $res
 fi
