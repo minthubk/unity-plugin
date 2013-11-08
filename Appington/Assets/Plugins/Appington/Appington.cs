@@ -29,14 +29,18 @@ public class Appington
 	// Initializes the Appington SDK and prepares it for use
 	public static void init(string api_token)
 	{
+#if UNITY_IPHONE || UNITY_ANDROID
 		instance().init(api_token);
+#endif
 	}
 
 
 	// Sends a control message to the Appington SDK
 	public static void control( string name, Dictionary<string,object> parameters )
 	{
+#if UNITY_IPHONE || UNITY_ANDROID
 		instance().control( name, parameters != null ? parameters.toJson() : "{}" );
+#endif
 	}
 
 	#endregion
@@ -64,10 +68,12 @@ public class Appington
 
 	public static void onApplicationPause( bool didPause )
 	{
+#if UNITY_IPHONE || UNITY_ANDROID
 		if( didPause )
 			onPause();
 		else
 			onResume();
+#endif
 	}
 
 	#endregion
