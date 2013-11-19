@@ -110,9 +110,12 @@ NSString *sm_singleton_synchronizer=@"synchronizer";
 
 	// create a hash like so: { name: name, values: values }
 	NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:name, @"name", values, @"values", nil];
-	NSString *json = [AppingtonManager objectToJson:dict];
+    // defensive test in case memory allocation failed, iOS<5 etc
+    if([dict count] == 2) {
+    	NSString *json = [AppingtonManager objectToJson:dict];
 
-	UnitySendMessage( "AppingtonManager", "onEventOccurred", json.UTF8String );
+        UnitySendMessage( "AppingtonManager", "onEventOccurred", json.UTF8String );
+    }
 }
 
 
