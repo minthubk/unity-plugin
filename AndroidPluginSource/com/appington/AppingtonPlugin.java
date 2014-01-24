@@ -40,8 +40,6 @@ public class AppingtonPlugin implements com.appington.agar.EventListenerJSON
 	@Override
 	public Object onEvent( String name, JSONObject values )
 	{
-		Log.i( TAG, "got an event name: " + name );
-
 		try
 		{
 			// create a hash like so: { name: name, values: values }
@@ -49,12 +47,11 @@ public class AppingtonPlugin implements com.appington.agar.EventListenerJSON
 			rootJsonObject.put( "name", name );
 			rootJsonObject.put( "values", values );
 
-			Log.i( TAG, "json: " + rootJsonObject.toString() );
 			UnityPlayer.UnitySendMessage( "AppingtonManager", "onEventOccurred", rootJsonObject.toString() );
 		}
 		catch( JSONException e )
 		{
-			Log.i( TAG, "Error adding data to JSONObject: " + e.getMessage() );
+			Log.e( TAG, "Error adding data to JSONObject: " + e.getMessage() );
 		}
 
 		return null;
